@@ -8,9 +8,37 @@ export class Gameboard {
         //if the ship cannot fit in to the attempted position, then return false
         if (validShipPlacement(length, startPosition, orientation, this.board) === false) return false        
         
-        const ship = new Ship(length)
 
+        if (orientation === "vertical") {
+            this.board = createShipVertically(length, startPosition, this.board)
+        }
+        if (orientation === "horizontal") {
+            this.board = createShipHorizontally(length, startPosition, this.board)
+        }
     }
+}
+
+function createShipVertically(length, startPosition, gameboard) {
+    const ship = new Ship(length)
+    const verticalLength = length * 10
+    const endPosition = length + verticalLength
+
+    for (let i = startPosition; i < endPosition; i += 10) {
+        gameboard[i].ship = ship
+    }
+    
+    return gameboard
+}
+
+function createShipHorizontally(length, startPosition, gameboard) {
+    const ship = new Ship(length)
+    const endPosition = startPosition + length
+
+    for (let i = startPosition; i < endPosition; i++) {
+        gameboard[i].ship = ship
+    }
+
+    return gameboard
 }
 
 export function validShipPlacement(length, startPosition, orientation, gameboard) {
@@ -69,3 +97,10 @@ function createBoard() {
     }
     return coordinates
 }
+
+
+const board = new Gameboard() 
+
+board.placeShip(3, 5, "horizontal")
+
+console.log(board)
