@@ -4,26 +4,68 @@ export class Gameboard {
     constructor(s){
         this.board = createBoard()
     }
-    placeShip(length, startPosition, finishPosition) {
+    placeShip(length, startPosition, orientation) {
         //if the ship cannot fit in to the attempted position, then return false
-        if (canShipFit(length, startPosition, finishPosition) === false) return false        
+        if (validShipPlacement(length, startPosition, orientation, this.board) === false) return false        
+        
         const ship = new Ship(length)
 
     }
 }
 
-function createBoard() {
-    const rows = []
-    //creates a 10 * 10 gameboard 
-    for (let i = 0; i < 10; i++) {
-        rows[i] = []
-        for (let j = 0; j < 10; j++){
-            rows[i].push(0)
+export function validShipPlacement(length, startPosition, orientation, gameboard) {
+
+    if (orientation === "horizontal") {
+        const endPosition = length + startPosition
+
+        // returns false if the position is out of bounds of the board
+        if (endPosition > 99) return false
+
+        //checks that the ship does not "wrap" to a new line on the first line
+        if (startPosition <= 9 && endPosition >= 10) {
+            return false
+        } else if (startPosition >= 10){
+            //checks that the ship does not "wrap" to a new line on all other lines
+            //by comparing the first digit of the start and end positions. 
+            const startPositionString = startPosition.toString()
+            const endPositionString = endPosition.toString()
+
+            if(startPositionString[0] !== endPositionString[0]) return false
         }
+        //checks to ensure that a ship is not being places on top of another ship
+        for (let i = startPosition; i < endPosition; i++) {
+            if (gameboard[i].ship != null) return false
+        }
+
+        //returns true if it is a valid ship locations
+        return true
+    } else if (orientation === "vertical") {
+        const verticalLength = length * 10
+        const endPosition = startPosition + verticalLength
+
+        //returns false if out of upper bounds of the board
+        if (endPosition > 99) return false
+
+        //checks to ensure that a ship is not being places on top of another ship
+        for (let i = startPosition; i < endPosition; i += 10) {
+            console.log(i)
+            if (gameboard[i].ship !== null) return false
+        }
+
+        //returns true if all other cases are correct
+        return true
     }
-    return rows
 }
 
-// const board = new Gameboard()
-
-// console.log(board.board)
+function createBoard() {
+    const coordinates = []
+    //creates a 10 * 10 gameboard represented by a 2d array
+    for (let i = 0; i < 100; i++) {
+        const coordinate = {
+            coordinate: i,
+            ship: null
+        }
+        coordinates.push(coordinate)
+    }
+    return coordinates
+}
