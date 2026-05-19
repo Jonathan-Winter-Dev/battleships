@@ -16,6 +16,23 @@ export class Gameboard {
             this.board = createShipHorizontally(length, startPosition, this.board)
         }
     }
+    receiveAttack(position) {
+        //if the position is already hit, then return false
+        if (this.board[position].isHit === true) return false
+
+        //if the position does not have a ship, then hit that position
+        if (this.board[position].ship === null) {
+            this.board[position].isHit = true
+            return this.board
+        } else {
+            this.board[position].isHit = true
+            this.board[position].ship.hit()
+            return this.board
+        }
+    }
+    isValidShipPlacement(length, startPosition, orientation) {
+        return validShipPlacement(length, startPosition, orientation, this.board)
+    }
 }
 
 function createShipVertically(length, startPosition, gameboard) {
@@ -41,7 +58,7 @@ function createShipHorizontally(length, startPosition, gameboard) {
     return gameboard
 }
 
-export function validShipPlacement(length, startPosition, orientation, gameboard) {
+function validShipPlacement(length, startPosition, orientation, gameboard) {
 
     if (orientation === "horizontal") {
         const endPosition = length + startPosition
@@ -85,13 +102,14 @@ export function validShipPlacement(length, startPosition, orientation, gameboard
     }
 }
 
-function createBoard() {
+export function createBoard() {
     const coordinates = []
     //creates a 10 * 10 gameboard represented by a 2d array
     for (let i = 0; i < 100; i++) {
         const coordinate = {
             coordinate: i,
-            ship: null
+            ship: null,
+            isHit: false
         }
         coordinates.push(coordinate)
     }
@@ -101,6 +119,8 @@ function createBoard() {
 
 const board = new Gameboard() 
 
-board.placeShip(3, 5, "horizontal")
+// board.placeShip(3, 5, "horizontal")
+// console.log(board.board[5].ship)
+// board.receiveAttack(5)
+// console.log(board.board[6].ship)
 
-console.log(board)
