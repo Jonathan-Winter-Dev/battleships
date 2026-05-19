@@ -10,6 +10,7 @@ export class Gameboard {
         if (validShipPlacement(length, startPosition, orientation, this.board) === false) return false        
         
         const ship = new Ship(length)
+        this.ships.push(ship)
 
         if (orientation === "vertical") {
             this.board = createShipVertically(ship, startPosition, this.board)
@@ -37,14 +38,25 @@ export class Gameboard {
             return this.board[position]
         }
     }
+
     isValidShipPlacement(length, startPosition, orientation) {
         return validShipPlacement(length, startPosition, orientation, this.board)
+    }
+    
+    allShipsSunk() {
+        //base case for no ships in this.ships
+        if (this.ships.length === 0) return false
+
+        for (let ship of this.ships) {
+            if (ship.isSunk() === false) return false
+        }
+        return true
     }
 }
 
 function createShipVertically(ship, startPosition, gameboard) {
     const verticalLength = ship.length * 10
-    const endPosition = length + verticalLength
+    const endPosition = ship.length + verticalLength
 
     for (let i = startPosition; i < endPosition; i += 10) {
         gameboard[i].ship = ship

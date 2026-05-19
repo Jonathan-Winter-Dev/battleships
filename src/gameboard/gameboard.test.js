@@ -94,3 +94,36 @@ test("receiveAttack() will update isHit status on a position with a ship", () =>
     expect(position.ship.health).toBe(0);
 });
 
+// ***** TESTS FOR RECEIVING HITS *****
+
+test("allShipsSunk() returns false on a gameboard with no ships", () => {
+    const board = new Gameboard()
+    expect(board.allShipsSunk()).toBe(false);
+});
+
+test("allShipsSunk() returns false on a gameboard with ships that have not been sunk", () => {
+    const board = new Gameboard()
+    board.placeShip(1, 1, "horizontal")
+    board.placeShip(2, 10, "vertical")
+    expect(board.allShipsSunk()).toBe(false);
+});
+
+
+test("allShipsSunk() returns false on a gameboard with a mix of sunk and not sunk ships", () => {
+    const board = new Gameboard()
+    board.placeShip(1, 1, "horizontal")
+    board.receiveAttack(1)
+    board.placeShip(2, 10, "vertical")
+    expect(board.allShipsSunk()).toBe(false);
+});
+
+test("allShipsSunk() returns true where all ships have been sunk", () => {
+    const board = new Gameboard()
+    board.placeShip(1, 1, "horizontal")
+    board.receiveAttack(1)
+    board.placeShip(2, 10, "vertical")
+    board.receiveAttack(10)
+    board.receiveAttack(20)
+
+    expect(board.allShipsSunk()).toBe(true);
+});
