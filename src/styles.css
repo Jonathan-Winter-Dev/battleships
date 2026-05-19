@@ -1,3 +1,39 @@
 body {
-  background-color: aqua;
+  background-color: gray;
+}
+
+.boards {
+  display: flex;
+}
+
+.playerOneBoard, .playerTwoBoard {
+  display: grid;
+  margin: 50px;
+  padding: 30px;
+  border: 1px solid red;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.cell {
+  background-color: white;
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  margin: 5px
+}
+
+.cell.ship {
+  background-color: lightblue;
+}
+
+.cell.hit {
+  background-color: blue;
+  color: white;
+}
+
+.cell.ship.hit {
+  background-color: red;
 }

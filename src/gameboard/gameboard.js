@@ -133,11 +133,3 @@ export function createBoard() {
 }
 
 
-// const board = new Gameboard() 
-
-// board.placeShip(3, 5, "horizontal")
-// console.log(board.board[5].ship)
-// board.receiveAttack(5)
-// console.log(board.board[6].ship)
-// console.log(board.getDataByCoordinate(5))
-
