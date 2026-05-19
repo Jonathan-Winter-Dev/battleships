@@ -13,6 +13,8 @@ test("gameboard.board is an array with a length of 100", () => {
   expect(board.board).toStrictEqual(BOARDARR);
 });
 
+// ***** TESTS FOR VALID HORIZONTAL PLACEMENTS *****
+
 test("will return false on attempting to place a ship horizontally that would be out of upper bounds", () => {
     const board = new Gameboard()
     expect(board.isValidShipPlacement(6, 98, "horizontal")).toBe(false);
@@ -45,7 +47,7 @@ test("will return true when placing a valid ship on the third line", () => {
     expect(board.isValidShipPlacement(8, 20, "horizontal")).toBe(true);
 });
 
-// ***** TESTS FOR VERTICAL PLACEMENTS *****
+// ***** TESTS FOR VALID VERTICAL PLACEMENTS *****
 
 test("will return false on attempting to place a ship vertically that would be out of upper bounds", () => {
     const board = new Gameboard()
@@ -68,3 +70,27 @@ test("will return true when placing a valid ship vertically on the third line", 
     const board = new Gameboard()
     expect(board.isValidShipPlacement(2, 30, "vertical")).toBe(true);
 });
+
+test("will return true when placing a valid ship vertically on the third line", () => {
+    const board = new Gameboard()
+    expect(board.isValidShipPlacement(2, 30, "vertical")).toBe(true);
+});
+
+// ***** TESTS FOR RECEIVING HITS *****
+
+test("receiveAttack() will update isHit status on a position without a ship", () => {
+    const board = new Gameboard()
+    board.receiveAttack(3)
+    const position = board.getDataByCoordinate(3)
+    expect(position.isHit).toBe(true);
+});
+
+test("receiveAttack() will update isHit status on a position with a ship", () => {
+    const board = new Gameboard()
+    board.placeShip(1, 1, "horizontal")
+    board.receiveAttack(1)
+    const position = board.getDataByCoordinate(1)
+    expect(position.isHit).toBe(true);
+    expect(position.ship.health).toBe(0);
+});
+

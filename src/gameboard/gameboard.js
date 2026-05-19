@@ -1,21 +1,28 @@
 import { Ship } from "./../ship/ship.js"
 
 export class Gameboard {
-    constructor(s){
+    constructor(){
         this.board = createBoard()
+        this.ships = []
     }
     placeShip(length, startPosition, orientation) {
         //if the ship cannot fit in to the attempted position, then return false
         if (validShipPlacement(length, startPosition, orientation, this.board) === false) return false        
         
+        const ship = new Ship(length)
 
         if (orientation === "vertical") {
-            this.board = createShipVertically(length, startPosition, this.board)
+            this.board = createShipVertically(ship, startPosition, this.board)
         }
         if (orientation === "horizontal") {
-            this.board = createShipHorizontally(length, startPosition, this.board)
+            this.board = createShipHorizontally(ship, startPosition, this.board)
         }
     }
+
+    getDataByCoordinate(position) {
+        return this.board[position]
+    }
+
     receiveAttack(position) {
         //if the position is already hit, then return false
         if (this.board[position].isHit === true) return false
@@ -23,11 +30,11 @@ export class Gameboard {
         //if the position does not have a ship, then hit that position
         if (this.board[position].ship === null) {
             this.board[position].isHit = true
-            return this.board
+            return this.board[position]
         } else {
             this.board[position].isHit = true
             this.board[position].ship.hit()
-            return this.board
+            return this.board[position]
         }
     }
     isValidShipPlacement(length, startPosition, orientation) {
@@ -35,9 +42,8 @@ export class Gameboard {
     }
 }
 
-function createShipVertically(length, startPosition, gameboard) {
-    const ship = new Ship(length)
-    const verticalLength = length * 10
+function createShipVertically(ship, startPosition, gameboard) {
+    const verticalLength = ship.length * 10
     const endPosition = length + verticalLength
 
     for (let i = startPosition; i < endPosition; i += 10) {
@@ -47,9 +53,8 @@ function createShipVertically(length, startPosition, gameboard) {
     return gameboard
 }
 
-function createShipHorizontally(length, startPosition, gameboard) {
-    const ship = new Ship(length)
-    const endPosition = startPosition + length
+function createShipHorizontally(ship, startPosition, gameboard) {
+    const endPosition = startPosition + ship.length
 
     for (let i = startPosition; i < endPosition; i++) {
         gameboard[i].ship = ship
@@ -93,7 +98,6 @@ function validShipPlacement(length, startPosition, orientation, gameboard) {
 
         //checks to ensure that a ship is not being places on top of another ship
         for (let i = startPosition; i < endPosition; i += 10) {
-            console.log(i)
             if (gameboard[i].ship !== null) return false
         }
 
@@ -117,10 +121,11 @@ export function createBoard() {
 }
 
 
-const board = new Gameboard() 
+// const board = new Gameboard() 
 
 // board.placeShip(3, 5, "horizontal")
 // console.log(board.board[5].ship)
 // board.receiveAttack(5)
 // console.log(board.board[6].ship)
+// console.log(board.getDataByCoordinate(5))
 
