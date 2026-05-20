@@ -47,6 +47,16 @@ test("will return true when placing a valid ship on the third line", () => {
     expect(board.isValidShipPlacement(8, 20, "horizontal")).toBe(true);
 });
 
+test("will return true when placing an exact fitting ship at the end of the board", () => {
+    const board = new Gameboard()
+    expect(board.isValidShipPlacement(1, 99, "horizontal")).toBe(true);
+});
+
+test("will return true when placing an exact fitting ship in the middle of the board", () => {
+    const board = new Gameboard()
+    expect(board.isValidShipPlacement(3, 37, "horizontal")).toBe(true);
+});
+
 // ***** TESTS FOR VALID VERTICAL PLACEMENTS *****
 
 test("will return false on attempting to place a ship vertically that would be out of upper bounds", () => {
@@ -74,6 +84,11 @@ test("will return true when placing a valid ship vertically on the third line", 
 test("will return true when placing a valid ship vertically on the third line", () => {
     const board = new Gameboard()
     expect(board.isValidShipPlacement(2, 30, "vertical")).toBe(true);
+});
+
+test("will return true when placing an exact fitting ship", () => {
+    const board = new Gameboard()
+    expect(board.isValidShipPlacement(1, 99, "vertical")).toBe(true);
 });
 
 // ***** TESTS FOR RECEIVING HITS *****

@@ -56,7 +56,7 @@ export class Gameboard {
 
 function createShipVertically(ship, startPosition, gameboard) {
     const verticalLength = ship.length * 10
-    const endPosition = ship.length + verticalLength
+    const endPosition = startPosition + verticalLength
 
     for (let i = startPosition; i < endPosition; i += 10) {
         gameboard[i].ship = ship
@@ -76,9 +76,11 @@ function createShipHorizontally(ship, startPosition, gameboard) {
 }
 
 function validShipPlacement(length, startPosition, orientation, gameboard) {
+    
 
     if (orientation === "horizontal") {
-        const endPosition = length + startPosition
+        //end position minuses one to account for length being converted to array indexing
+        const endPosition = length + startPosition -1
 
         // returns false if the position is out of bounds of the board
         if (endPosition > 99) return false
@@ -95,21 +97,22 @@ function validShipPlacement(length, startPosition, orientation, gameboard) {
             if(startPositionString[0] !== endPositionString[0]) return false
         }
         //checks to ensure that a ship is not being places on top of another ship
-        for (let i = startPosition; i < endPosition; i++) {
+        for (let i = startPosition; i <= endPosition; i++) {
             if (gameboard[i].ship != null) return false
         }
 
         //returns true if it is a valid ship locations
         return true
     } else if (orientation === "vertical") {
-        const verticalLength = length * 10
+        const verticalLength = (length - 1)* 10
+        //end position minuses one to account for length being converted to array indexing
         const endPosition = startPosition + verticalLength
 
         //returns false if out of upper bounds of the board
         if (endPosition > 99) return false
 
         //checks to ensure that a ship is not being places on top of another ship
-        for (let i = startPosition; i < endPosition; i += 10) {
+        for (let i = startPosition; i <= endPosition; i += 10) {
             if (gameboard[i].ship !== null) return false
         }
 
