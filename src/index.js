@@ -8,17 +8,19 @@ const player2 = new Player(false, "player2")
 placeSomeShips(player1)
 placeSomeShips(player2)
 
+document.querySelector(".playersTurn").innerText = "Player 1's Turn"
 
 displayBoard(player1.player, player1.board, document.querySelector(".playerOneBoard"))
 
 
 function changePlayer(player) {
+    const playersTurnDisplay = document.querySelector(".playersTurn")
     if (player === "player2") {
         displayBoard(player1.player, player1.board, document.querySelector(".playerOneBoard"))
-        console.log(`player1's turn`)
+        playersTurnDisplay.innerText = "Player 1's Turn"
     } else {
         displayBoard(player2.player, player2.board, document.querySelector(".playerTwoBoard"))
-        console.log(`player2's turn`)
+        playersTurnDisplay.innerText = "Player 2's Turn"
     }
 }
 

@@ -25,9 +25,6 @@ body {
   margin: 5px
 }
 
-.cell.ship {
-  background-color: lightblue;
-}
 
 .cell.hit {
   background-color: blue;
