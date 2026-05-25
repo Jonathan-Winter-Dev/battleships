@@ -60,3 +60,24 @@ test("switchPlayer() returns the player that was not passed to switchPlayer()", 
     const newCurrentPlayer = gameController.switchPlayer(currentPlayer)
     expect(newCurrentPlayer.player).toBe("player1")
 });
+
+test("checkWinner() returns false if a player has not sunk the other players ships", () => {
+    const gameController = new GameController()
+    const player1 = gameController.addPlayer(true, "player1")
+    const player2 = gameController.addPlayer(true, "player2")
+
+    player2.board.placeShip(1, 1, "horizontal")
+
+    expect(gameController.checkWinner(player1)).toBe(false)
+});
+
+test("checkWinner() returns true if a player has sunk the other players ships", () => {
+    const gameController = new GameController()
+    const player1 = gameController.addPlayer(true, "player1")
+    const player2 = gameController.addPlayer(true, "player2")
+
+    player2.board.placeShip(1, 1, "horizontal")
+    player2.board.receiveAttack(1)
+
+    expect(gameController.checkWinner(player1)).toBe(true)
+});
