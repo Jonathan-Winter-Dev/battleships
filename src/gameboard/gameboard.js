@@ -52,6 +52,10 @@ export class Gameboard {
         }
         return true
     }
+
+    clearBoard() {
+        this.board = createBoard()
+    }
 }
 
 function createShipVertically(ship, startPosition, gameboard) {
@@ -76,8 +80,6 @@ function createShipHorizontally(ship, startPosition, gameboard) {
 }
 
 function validShipPlacement(length, startPosition, orientation, gameboard) {
-    
-
     if (orientation === "horizontal") {
         //end position minuses one to account for length being converted to array indexing
         const endPosition = length + startPosition -1

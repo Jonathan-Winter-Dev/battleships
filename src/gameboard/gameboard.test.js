@@ -142,3 +142,16 @@ test("allShipsSunk() returns true where all ships have been sunk", () => {
 
     expect(board.allShipsSunk()).toBe(true);
 });
+
+// Resetting Gameboard()
+
+test("resetBoard() resets the board to a new board", () => {
+    const board = new Gameboard()
+    board.placeShip(1,1, "horizontal")
+    const position = board.getDataByCoordinate(1)
+
+    expect(position.ship).not.toBe(null)
+    board.clearBoard()
+    const positionAfterClearing = board.getDataByCoordinate(1)
+    expect(positionAfterClearing.ship).toBe(null)
+})
