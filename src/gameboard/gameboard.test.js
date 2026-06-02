@@ -155,3 +155,31 @@ test("resetBoard() resets the board to a new board", () => {
     const positionAfterClearing = board.getDataByCoordinate(1)
     expect(positionAfterClearing.ship).toBe(null)
 })
+
+// **** Getting positions that have not been hit yet
+
+test("positionsNotHit() returns entire board array when no positions have been hit", () => {
+    const board = new Gameboard()
+
+    expect(board.positionsNotHit().length).toBe(100);
+});
+
+test("positionsNotHit() returns correct board array length when 3 positions have been hit", () => {
+    const board = new Gameboard()
+
+    board.receiveAttack(1)
+    board.receiveAttack(2)
+    board.receiveAttack(3)
+
+    expect(board.positionsNotHit().length).toBe(97);
+});
+
+test("positionsNotHit() returns correct board array length when all positions have been hit", () => {
+    const board = new Gameboard()
+
+    for (let i = 0; i < 100; i++) {
+        board.receiveAttack(i)
+    }
+
+    expect(board.positionsNotHit().length).toBe(0);
+});

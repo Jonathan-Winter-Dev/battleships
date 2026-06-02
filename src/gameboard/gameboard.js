@@ -56,6 +56,10 @@ export class Gameboard {
     clearBoard() {
         this.board = createBoard()
     }
+
+    positionsNotHit() {
+        return this.board.filter((position) => position.isHit === false)
+    }
 }
 
 function createShipVertically(ship, startPosition, gameboard) {

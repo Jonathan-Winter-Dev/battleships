@@ -32,7 +32,6 @@ function displayPlayerName(playerName) {
 }
 
 function displayGameState(player) {
-    
     displayPlayerName(player.name)
     displayGameBoard(player)
 }
@@ -64,6 +63,9 @@ function displayGameBoard(player) {
             if (position.isHit === false) {
                 cell.addEventListener("click", () => {
                     player.board.receiveAttack(j)
+                    if (gameController.checkWinner(player)) {
+                        alert(`${player.name} won!`)
+                    }
                     displayGameState(gameController.switchPlayer(player))
                 })
             }

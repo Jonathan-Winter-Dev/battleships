@@ -37,5 +37,10 @@ export class GameController {
         const otherPlayer =  this.getPlayers().find((item) => item.player !== currentPlayer.player)
 
         return otherPlayer.board.allShipsSunk()
-    } 
+    }
+
+    makeAiMove(currentPlayer) {
+        const otherPlayer = this.switchPlayer(currentPlayer)
+        const positionsNotHit = otherPlayer.board.filter((position) => position.isHit === false)
+    }
 }
