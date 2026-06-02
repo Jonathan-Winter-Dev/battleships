@@ -1,10 +1,5 @@
 import { Player } from "./../player/player.js"
 
-//checks for winners
-//add player
-//restart game
-
-
 export class GameController {
     constructor() {
         this.players = []
@@ -37,10 +32,10 @@ export class GameController {
 
     checkWinner(currentPlayer) {
         if (this.getPlayers().length !== 2) throw new Error("There must be two players to check for winner")
-        
-        //check to see if all the others players ships are sunk. Return true if they are, false if theyre not
+     
+        //check to see if all the others players ships are sunk. Return true if they are, false if they're not
         const otherPlayer =  this.getPlayers().find((item) => item.player !== currentPlayer.player)
-        
+
         return otherPlayer.board.allShipsSunk()
     } 
 }

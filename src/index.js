@@ -1,28 +1,22 @@
 import "./styles.css";
 import { Player } from "./player/player.js"
+import { GameController  } from "./game-controller/game-controller.js";
 
-const player1 = new Player(false, "player1")
-const player2 = new Player(false, "player2")
+// const player1 = new Player(false, "player1")
+// const player2 = new Player(false, "player2")
 
+const gameController =  new GameController()
+gameController.addPlayer(false, "Jon")
+gameController.addPlayer(false, "Maddy")
 
-placeSomeShips(player1)
-placeSomeShips(player2)
+const playersArr = gameController.getPlayers()
+playersArr.forEach((player) => placeSomeShips(player))
+
 
 document.querySelector(".playersTurn").innerText = "Player 1's Turn"
 
-displayBoard(player1.player, player1.board, document.querySelector(".playerOneBoard"))
+displayGameState(playersArr[0])
 
-
-function changePlayer(player) {
-    const playersTurnDisplay = document.querySelector(".playersTurn")
-    if (player === "player2") {
-        displayBoard(player1.player, player1.board, document.querySelector(".playerOneBoard"))
-        playersTurnDisplay.innerText = "Player 1's Turn"
-    } else {
-        displayBoard(player2.player, player2.board, document.querySelector(".playerTwoBoard"))
-        playersTurnDisplay.innerText = "Player 2's Turn"
-    }
-}
 
 function placeSomeShips(player) {
     player.board.placeShip(3, 10, "horizontal")
@@ -32,7 +26,19 @@ function placeSomeShips(player) {
     player.board.placeShip(6, 32, "vertical")
 }
 
-function displayBoard(player, board, div) {
+function displayPlayerName(playerName) {
+    const div = document.querySelector(".playersTurn")
+    div.innerText = playerName
+}
+
+function displayGameState(player) {
+    
+    displayPlayerName(player.name)
+    displayGameBoard(player)
+}
+
+function displayGameBoard(player) {
+    const div = document.querySelector(".playerBoard")
     div.innerHTML = ""
     let count = 0
     for (let i = 0; i < 10; i += 1) {
@@ -43,7 +49,7 @@ function displayBoard(player, board, div) {
             const cell = document.createElement("div")
             cell.classList.add("cell")
 
-            const position = board.getDataByCoordinate(j)
+            const position = player.board.getDataByCoordinate(j)
 
             if (position.ship !== null) {
                 cell.classList.add("ship")
@@ -57,9 +63,8 @@ function displayBoard(player, board, div) {
             //only attach eventlisteners to cells that haven't been hit yet to avoid hitting them again
             if (position.isHit === false) {
                 cell.addEventListener("click", () => {
-                    board.receiveAttack(j)
-                    displayBoard(player, board, div)
-                    changePlayer(player)
+                    player.board.receiveAttack(j)
+                    displayGameState(gameController.switchPlayer(player))
                 })
             }
             row.append(cell)
